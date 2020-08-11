@@ -30,5 +30,4 @@ delay|64|连接服务器延迟(ms)
 
 手动滑稽[滑稽]
 
-另外 [MOTD服务器平台][1]也上线了
-[1]: https://motd.52craft.cc/
+本项目已停止维护，API于api.php文件内。
