@@ -29,5 +29,3 @@ delay|64|连接服务器延迟(ms)
 示例：https://motd.52craft.cc/api.php?ip=mc.52craft.cc&port=2020
 
 手动滑稽[滑稽]
-
-本项目已停止维护，API于api.php文件内。
