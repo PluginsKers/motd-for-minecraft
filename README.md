@@ -4,7 +4,7 @@
 通过UDP协议获取MCPE的服务器状态    
 就是平常说的motdpe接口。
 
-懂的自然懂，接口地址：https://motd.52craft.cc/api.php
+懂的自然懂，接口地址：https://motd.52craft.cc/
 请求方式GET/POST
 
 参数|示例|描述
@@ -26,6 +26,6 @@ max|10|服务器人数上限
 gamemode|Survival|游戏模式
 delay|64|连接服务器延迟(ms)
 
-示例：https://motd.52craft.cc/api.php?ip=mc.52craft.cc&port=2020
+示例：https://motd.52craft.cc/?ip=mc.52craft.cc&port=2020
 
 手动滑稽[滑稽]
