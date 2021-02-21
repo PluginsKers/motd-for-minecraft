@@ -17,6 +17,8 @@ port|2020|服务器端口
 -|-|-
 status|online|服务器唯一状态识别
 ip|mc.52craft.cc|返回查询IP
+real|127.0.0.1|服务器真实IP
+location|北京|服务器地址|
 port|2020|返回查询端口
 motd|BorderLands In Minecraft|服务器广播内容Motd
 agreement|389|协议版本
