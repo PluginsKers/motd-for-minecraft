@@ -2,6 +2,16 @@
 header("Access-Control-Allow-Origin: *");
 header('Content-type: application/json');
 error_reporting(0);
+
+function getAddr($ip) {
+    $s = file_get_contents("http://whois.pconline.com.cn/ip.jsp?ip={$ip}", true);
+    $encode = mb_detect_encoding($s, array("ASCII",'UTF-8',"GB2312","GBK",'BIG5'));
+    $s = mb_convert_encoding($s, 'UTF-8', $encode);
+    $s = str_replace(PHP_EOL, '', $s);
+    $s = str_replace("\r", '', $s);
+    return $s;
+}
+
 $t1 = microtime(true);
 if (!empty($_REQUEST['ip']) && !empty($_REQUEST['port'])) {
     if ($handle = stream_socket_client("udp://{$_REQUEST['ip']}:{$_REQUEST['port']}", $errno, $errstr, 2)) {
@@ -11,10 +21,13 @@ if (!empty($_REQUEST['ip']) && !empty($_REQUEST['port'])) {
         $data = explode(";", $result);
         $data['1'] = preg_replace("/§[a-z A-Z 0-9]{1}/s", '', $data['1']);
         if (!empty($data['1'])) {
-        	$t2 = microtime(true);
+            $t2 = microtime(true);
+            $real = gethostbyname($_REQUEST['ip']);
             $array = [
                 'status' => 'online',
                 'ip' => $_REQUEST['ip'],
+                'real' => $real,
+                'location' => getAddr($real),
                 'port' => $_REQUEST['port'],
                 'motd' => $data['1'],
                 'agreement' => $data['2'],
@@ -36,5 +49,5 @@ if (!empty($_REQUEST['ip']) && !empty($_REQUEST['port'])) {
     }
     exit(json_encode($array));
 } else {
-	exit(json_encode(['status' => 'offline']));
+    exit(json_encode(['status' => 'offline']));
 }

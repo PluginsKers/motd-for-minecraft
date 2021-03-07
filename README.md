@@ -1,4 +1,4 @@
-# Motd_For_Minecraft
+# Motd_of_Minecraft
 ## 响应 ##
 
 通过UDP协议获取MCPE的服务器状态    
@@ -17,9 +17,9 @@ port|2020|服务器端口
 -|-|-
 status|online|服务器唯一状态识别
 ip|mc.52craft.cc|返回查询IP
-real|127.0.0.1|服务器真实IP
-location|北京|服务器地址|
 port|2020|返回查询端口
+real|222.22.333.22|真实IP地址
+location|北京省 联通|线路所在位置
 motd|BorderLands In Minecraft|服务器广播内容Motd
 agreement|389|协议版本
 version|1.14.30|客户端版本
