@@ -4,7 +4,7 @@
 通过UDP协议获取MCPE的服务器状态    
 就是平常说的motdpe接口。
 
-懂的自然懂，接口地址：https://api.52craft.cc/MOTD/
+懂的自然懂，接口地址：https://api.52craft.cc/v1/motd
 请求方式GET/POST
 
 参数|示例|描述
