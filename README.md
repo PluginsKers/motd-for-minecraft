@@ -1,18 +1,19 @@
-# Motd_of_Minecraft
-## 响应 ##
+## Motd_For_Minecraft ##
 
-通过UDP协议获取MCPE的服务器状态    
-就是平常说的motdpe接口。
+通过UDP协议获取MCPE的服务器状态
 
-懂的自然懂，接口地址：https://api.52craft.cc/v1/motd
-请求方式GET/POST
+接口地址：`https://api.52craft.cc/v1/motd/`
+请求方式：`GET/POST`
+
+### 请求参数 ###
 
 参数|示例|描述
 -|-|-
 ip|mc.52craft.cc|服务器IP地址
 port|2020|服务器端口
 
-返回JSON数据
+### 返回参数 ###
+
 参数|示例|描述
 -|-|-
 status|online|服务器唯一状态识别
@@ -28,6 +29,6 @@ max|10|服务器人数上限
 gamemode|Survival|游戏模式
 delay|64|连接服务器延迟(ms)
 
-示例：https://api.52craft.cc/MOTD/?ip=mc.52craft.cc&port=2020
+示例：https://api.52craft.cc/v1/motd/?ip=mc.52craft.cc&port=2020
 
 手动滑稽[滑稽]
