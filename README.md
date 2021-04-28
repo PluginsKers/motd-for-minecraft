@@ -3,6 +3,7 @@
 通过UDP协议获取MCPE的服务器状态
 
 接口地址：`https://api.52craft.cc/v1/motd/`
+
 请求方式：`GET/POST`
 
 ### 请求参数 ###
