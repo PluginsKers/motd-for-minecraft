@@ -17,7 +17,8 @@ port|2020|服务器端口
 
 参数|示例|描述
 -|-|-
-status|online|服务器唯一状态识别
+code|200|接口响应状态码
+status|online|服务器状态
 ip|mc.52craft.cc|返回查询IP
 port|2020|返回查询端口
 real|222.22.333.22|真实IP地址
