@@ -2,7 +2,9 @@
 
 通过UDP协议获取MCPE的服务器状态
 
-接口地址：`https://api.52craft.cc/v1/motd/`
+接口地址：`https://service-8kx1adsw-1253949189.gz.apigw.tencentcs.com/release/`
+
+> 已经加入托管了（广州）
 
 请求方式：`GET/POST`
 
@@ -31,6 +33,6 @@ max|10|服务器人数上限
 gamemode|Survival|游戏模式
 delay|64|连接服务器延迟(ms)
 
-示例：https://api.52craft.cc/v1/motd/?ip=mc.52craft.cc&port=2020
+示例：https://service-8kx1adsw-1253949189.gz.apigw.tencentcs.com/release/?ip=mc.52craft.cc&port=2020
 
 手动滑稽[滑稽]
