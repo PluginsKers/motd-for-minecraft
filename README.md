@@ -14,6 +14,7 @@
 -|-|-
 ip|mc.52craft.cc|服务器IP地址
 port|2020|服务器端口
+java|null|Java服务器接口
 
 ### 返回参数 ###
 
@@ -32,6 +33,15 @@ online|3|服务器在线人数
 max|10|服务器人数上限
 gamemode|Survival|游戏模式
 delay|64|连接服务器延迟(ms)
+
+### 错误码 ###
+
+错误码|描述
+-|-
+200|正常
+201|无法与输入地址握手
+202|无法建立UDP连接（基岩版）
+203|无法解析Hex（基岩版）
 
 示例：https://service-8kx1adsw-1253949189.gz.apigw.tencentcs.com/release/?ip=mc.52craft.cc&port=2020
 
