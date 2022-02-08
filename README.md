@@ -1,5 +1,9 @@
 ## Motd_For_Minecraft ##
 
+
+![](https://cdn.jsdelivr.net/gh/pluginskers/cdn/2021/20210427201617.png)
+
+
 通过UDP协议获取MCPE的服务器状态
 
 接口地址：`https://service-8kx1adsw-1253949189.gz.apigw.tencentcs.com/release/`
