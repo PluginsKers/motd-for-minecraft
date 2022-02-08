@@ -1,95 +1,65 @@
 <?php
+
+namespace Kers;
+
+use Kers\Utils;
+use xPaw\MinecraftQuery;
+use xPaw\MinecraftQueryException;
+
+$Utils = new Utils();
+
 header("Access-Control-Allow-Origin: *");
 header('Content-type: application/json');
 error_reporting(0);
 
-/**
- * Get real ip from $_SERVER
- * @return String
- * 
- */
-function getRealIp()
-{
-	$ip = false;
-	if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
-		$ip = $_SERVER["HTTP_CLIENT_IP"];
+$array = [
+	'code' => 201,
+	'status' => 'offine',
+	'ip' => 'N/A',
+	'real' => 'N/A',
+	'location' => 'N/A',
+	'port' => 'N/A',
+	'motd' => 'N/A',
+	'agreement' => 'N/A',
+	'version' => 'N/A',
+	'online' => 0,
+	'max' => 0,
+	'gamemode' => 'N/A',
+	'delay' => 'N/A'
+];
+
+
+if (empty($_REQUEST['b'])) {
+
+	// Edit this ->
+	define('MQ_SERVER_ADDR', 'localhost');
+	define('MQ_SERVER_PORT', 25565);
+	define('MQ_TIMEOUT', 1);
+	// Edit this <-
+
+	// Display everything in browser, because some people can't look in logs for errors
+	Error_Reporting(E_ALL | E_STRICT);
+	Ini_Set('display_errors', true);
+
+	require __DIR__ . '/src/MinecraftQuery.php';
+	require __DIR__ . '/src/MinecraftQueryException.php';
+
+	$Timer = MicroTime(true);
+
+	$Query = new MinecraftQuery();
+
+	try {
+		$Query->Connect(MQ_SERVER_ADDR, MQ_SERVER_PORT, MQ_TIMEOUT);
+	} catch (MinecraftQueryException $e) {
+		$Exception = $e;
 	}
-	if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-		$ips = explode(", ", $_SERVER['HTTP_X_FORWARDED_FOR']);
-		if ($ip) {
-			array_unshift($ips, $ip);
-			$ip = FALSE;
-		}
-		for ($i = 0; $i < count($ips); $i++) {
-			if (!preg_match("^(10|172\.16|192\.168)\.", $ips[$i])) {
-				$ip = $ips[$i];
-				break;
-			}
-		}
-	}
-	return ($ip ? $ip : $_SERVER['REMOTE_ADDR']);
-}
 
-/**
- * Check Empty or Isset
- * @param mixed ...$a
- * @return bool
- * 
- */
-function hasEmpty(...$a)
-{
-	foreach ($a as $key => $val) {
-		if (empty($val) || $val == null || $val == []) return true;
-	}
-	return false;
-}
+	$Timer = Number_Format(MicroTime(true) - $Timer, 4, '.', '');
 
-/**
- * Get Address By IP
- * @param string $ip
- * @param bealoon
- * @return String
- * 
- */
-function getLocation($ip = false)
-{
-	$ip = !$ip ? getRealIp() : $ip;
-	$s = file_get_contents("http://whois.pconline.com.cn/ip.jsp?ip={$ip}", true);
-	$encode = mb_detect_encoding($s, array("ASCII", 'UTF-8', "GB2312", "GBK", 'BIG5'));
-	$s = mb_convert_encoding($s, 'UTF-8', $encode);
-	$s = str_replace(PHP_EOL, '', $s);
-	$s = str_replace("\r", '', $s);
-	return $s;
-}
-
-/**
- * 
- * Motd for PC(Java) Minecraft
- * 
- */
-
-include_once './lib/MinecraftServerStatus.php'; //include the class
-$status = new MinecraftServerStatus(); // call the class
-
-$response = $status->getStatus('localhost'); // call the function
-
-if ($response) {
-	$real = gethostbyname($ip);
-	$array = [
-		'code' => 200,
-		'status' => 'online',
-		'ip' => $response['hostname'],
-		'real' => $real,
-		'location' => getLocation($real),
-		'port' => $port,
-		'motd' => $response['motd'],
-		'version' => $response['version'],
-		'online' => $response['players'],
-		'max' => $response['maxplayers'],
-		'delay' => $response['ping']
-	];
+	$array = $Query;
 } else {
-	if (!hasEmpty($_REQUEST['ip'], $_REQUEST['port'])) {
+
+	if (!$Utils->hasEmpty($_REQUEST['ip'], $_REQUEST['port'])) {
 		$ip = $_REQUEST['ip'];
 		$port = $_REQUEST['port'];
 		$t1 = microtime(true);
@@ -100,7 +70,7 @@ if ($response) {
 			fclose($handle);
 			$data = explode(";", $result);
 			$data['1'] = preg_replace("/§[a-z A-Z 0-9]{1}/s", '', $data['1']);
-			if (!hasEmpty($data, $data['1'])) {
+			if (!$Utils->hasEmpty($data, $data['1'])) {
 				$t2 = microtime(true);
 				$real = gethostbyname($ip);
 				$array = [
@@ -108,7 +78,7 @@ if ($response) {
 					'status' => 'online',
 					'ip' => $ip,
 					'real' => $real,
-					'location' => getLocation($real),
+					'location' => $Utils->getLocation($real),
 					'port' => $port,
 					'motd' => $data['1'],
 					'agreement' => $data['2'],
@@ -119,22 +89,11 @@ if ($response) {
 					'delay' => round($t2 - $t1, 3) * 1000
 				];
 			} else {
-				$array = [
-					'code' => 203,
-					'status' => 'offline'
-				];
+				$array['code'] = 203;
 			}
 		} else {
-			$array = [
-				'code' => 202,
-				'status' => 'offline'
-			];
+			$array['code'] = 202;
 		}
-	} else {
-		$array = [
-			'code' => 201,
-			'status' => 'offline'
-		];
 	}
 }
 
