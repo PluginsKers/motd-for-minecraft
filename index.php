@@ -62,52 +62,80 @@ function getLocation($ip = false)
 	return $s;
 }
 
-if (!hasEmpty($_REQUEST['ip'], $_REQUEST['port'])) {
-	$ip = $_REQUEST['ip'];
-	$port = $_REQUEST['port'];
-	$t1 = microtime(true);
-	if ($handle = stream_socket_client("udp://{$ip}:{$port}", $errno, $errstr, 2)) {
-		stream_set_timeout($handle, 2);
-		fwrite($handle, hex2bin('0100000000240D12D300FFFF00FEFEFEFEFDFDFDFD12345678') . "\n");
-		$result = strstr(fread($handle, 1024), "MCPE");
-		fclose($handle);
-		$data = explode(";", $result);
-		$data['1'] = preg_replace("/§[a-z A-Z 0-9]{1}/s", '', $data['1']);
-		if (!hasEmpty($data, $data['1'])) {
-			$t2 = microtime(true);
-			$real = gethostbyname($ip);
-			$array = [
-				'code' => 200,
-				'status' => 'online',
-				'ip' => $ip,
-				'real' => $real,
-				'location' => getLocation($real),
-				'port' => $port,
-				'motd' => $data['1'],
-				'agreement' => $data['2'],
-				'version' => $data['3'],
-				'online' => $data['4'],
-				'max' => $data['5'],
-				'gamemode' => $data['8'],
-				'delay' => round($t2 - $t1, 3) * 1000
-			];
+/**
+ * 
+ * Motd for PC(Java) Minecraft
+ * 
+ */
+
+include_once './lib/MinecraftServerStatus.php'; //include the class
+$status = new MinecraftServerStatus(); // call the class
+
+$response = $status->getStatus('localhost'); // call the function
+
+if ($response) {
+	$real = gethostbyname($ip);
+	$array = [
+		'code' => 200,
+		'status' => 'online',
+		'ip' => $response['hostname'],
+		'real' => $real,
+		'location' => getLocation($real),
+		'port' => $port,
+		'motd' => $response['motd'],
+		'version' => $response['version'],
+		'online' => $response['players'],
+		'max' => $response['maxplayers'],
+		'delay' => $response['ping']
+	];
+} else {
+	if (!hasEmpty($_REQUEST['ip'], $_REQUEST['port'])) {
+		$ip = $_REQUEST['ip'];
+		$port = $_REQUEST['port'];
+		$t1 = microtime(true);
+		if ($handle = stream_socket_client("udp://{$ip}:{$port}", $errno, $errstr, 2)) {
+			stream_set_timeout($handle, 2);
+			fwrite($handle, hex2bin('0100000000240D12D300FFFF00FEFEFEFEFDFDFDFD12345678') . "\n");
+			$result = strstr(fread($handle, 1024), "MCPE");
+			fclose($handle);
+			$data = explode(";", $result);
+			$data['1'] = preg_replace("/§[a-z A-Z 0-9]{1}/s", '', $data['1']);
+			if (!hasEmpty($data, $data['1'])) {
+				$t2 = microtime(true);
+				$real = gethostbyname($ip);
+				$array = [
+					'code' => 200,
+					'status' => 'online',
+					'ip' => $ip,
+					'real' => $real,
+					'location' => getLocation($real),
+					'port' => $port,
+					'motd' => $data['1'],
+					'agreement' => $data['2'],
+					'version' => $data['3'],
+					'online' => $data['4'],
+					'max' => $data['5'],
+					'gamemode' => $data['8'],
+					'delay' => round($t2 - $t1, 3) * 1000
+				];
+			} else {
+				$array = [
+					'code' => 203,
+					'status' => 'offline'
+				];
+			}
 		} else {
 			$array = [
-				'code' => 203,
+				'code' => 202,
 				'status' => 'offline'
 			];
 		}
 	} else {
 		$array = [
-			'code' => 202,
+			'code' => 201,
 			'status' => 'offline'
 		];
 	}
-} else {
-	$array = [
-		'code' => 201,
-		'status' => 'offline'
-	];
 }
 
 exit(json_encode($array));
