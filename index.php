@@ -6,6 +6,11 @@ use Kers\Utils;
 use xPaw\MinecraftQuery;
 use xPaw\MinecraftQueryException;
 
+require __DIR__ . '/utils.class.php';
+
+require __DIR__ . '/src/MinecraftQuery.php';
+require __DIR__ . '/src/MinecraftQueryException.php';
+
 $Utils = new Utils();
 
 header("Access-Control-Allow-Origin: *");
@@ -29,39 +34,36 @@ $array = [
 ];
 
 
-if (empty($_REQUEST['b'])) {
 
-	// Edit this ->
-	define('MQ_SERVER_ADDR', 'localhost');
-	define('MQ_SERVER_PORT', 25565);
-	define('MQ_TIMEOUT', 1);
-	// Edit this <-
+if (!$Utils->hasEmpty($_REQUEST['ip'], $_REQUEST['port'])) {
+	$ip = $_REQUEST['ip'];
+	$port = $_REQUEST['port'];
+	if (!isset($_REQUEST['java'])) {
 
-	// Display everything in browser, because some people can't look in logs for errors
-	Error_Reporting(E_ALL | E_STRICT);
-	Ini_Set('display_errors', true);
 
-	require __DIR__ . '/src/MinecraftQuery.php';
-	require __DIR__ . '/src/MinecraftQueryException.php';
+		// Edit this ->
+		define('MQ_SERVER_ADDR', $_REQUEST['ip']);
+		define('MQ_SERVER_PORT', $_REQUEST['port']);
+		define('MQ_TIMEOUT', 1);
+		// Edit this <-
 
-	$Timer = MicroTime(true);
+		// Display everything in browser, because some people can't look in logs for errors
+		Error_Reporting(E_ALL | E_STRICT);
+		Ini_Set('display_errors', true);
 
-	$Query = new MinecraftQuery();
+		$Timer = MicroTime(true);
 
-	try {
-		$Query->Connect(MQ_SERVER_ADDR, MQ_SERVER_PORT, MQ_TIMEOUT);
-	} catch (MinecraftQueryException $e) {
-		$Exception = $e;
-	}
+		$Query = new MinecraftQuery();
 
-	$Timer = Number_Format(MicroTime(true) - $Timer, 4, '.', '');
+		try {
+			$Query->Connect(MQ_SERVER_ADDR, MQ_SERVER_PORT, MQ_TIMEOUT);
+		} catch (MinecraftQueryException $e) {
+			$array['code'] = 201;
+			$Exception = $e;
+		}
 
-	$array = $Query;
-} else {
-
-	if (!$Utils->hasEmpty($_REQUEST['ip'], $_REQUEST['port'])) {
-		$ip = $_REQUEST['ip'];
-		$port = $_REQUEST['port'];
+		$Timer = Number_Format(MicroTime(true) - $Timer, 4, '.', '');
+	} else {
 		$t1 = microtime(true);
 		if ($handle = stream_socket_client("udp://{$ip}:{$port}", $errno, $errstr, 2)) {
 			stream_set_timeout($handle, 2);
@@ -95,6 +97,8 @@ if (empty($_REQUEST['b'])) {
 			$array['code'] = 202;
 		}
 	}
+} else {
+	$array['code'] = 201;
 }
 
 exit(json_encode($array));

@@ -4,7 +4,7 @@ namespace Kers;
 
 class Utils
 {
-	public function getRealIp(array $_SERVER = null)
+	public function getRealIp()
 	{
 		$ip = false;
 		if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
@@ -34,7 +34,7 @@ class Utils
 		return false;
 	}
 
-	public function getLocation(string $ip = false)
+	public function getLocation($ip = false)
 	{
 		$ip = !$ip ? $this->getRealIp() : $ip;
 		$s = file_get_contents("http://whois.pconline.com.cn/ip.jsp?ip={$ip}", true);
