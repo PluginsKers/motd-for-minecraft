@@ -4,9 +4,7 @@
 ![](https://cdn.jsdelivr.net/gh/pluginskers/cdn/2021/20210427201617.png)
 
 
-通过UDP协议获取MCPE的服务器状态
-
-> 已经加入托管了（广州）
+通过`UDP/TCP`协议获取MC的服务器状态
 
 请求方式：`GET/POST`
 
@@ -46,6 +44,6 @@ delay|64|连接服务器延迟(ms)
 203|无法解析Hex（基岩版）
 
 
-该项目现已停止维护！但仍会继续处理`issue`。
-感谢Minecraft社区，
-也感谢开发者们！
+该项目现已停止维护！但仍会继续处理Issue
+
+❥ 感谢Minecraft社区，也感谢开发者们！
