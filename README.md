@@ -6,8 +6,6 @@
 
 通过UDP协议获取MCPE的服务器状态
 
-接口地址：`https://service-8kx1adsw-1253949189.gz.apigw.tencentcs.com/release/`
-
 > 已经加入托管了（广州）
 
 请求方式：`GET/POST`
@@ -47,6 +45,7 @@ delay|64|连接服务器延迟(ms)
 202|无法建立UDP连接（基岩版）
 203|无法解析Hex（基岩版）
 
-示例：https://service-8kx1adsw-1253949189.gz.apigw.tencentcs.com/release/?ip=mc.52craft.cc&port=2020
 
-手动滑稽[滑稽]
+该项目现已停止维护！但仍会继续处理`issue`。
+感谢Minecraft社区，
+也感谢开发者们！
