@@ -1,4 +1,4 @@
-## Motd_For_Minecraft ##
+## Motd_For_Minecraft
 
 
 ![](https://cdn.jsdelivr.net/gh/pluginskers/cdn/2021/20210427201617.png)
@@ -45,5 +45,3 @@ delay|64|连接服务器延迟(ms)
 
 
 该项目现已停止维护！但仍会继续处理Issue
-
-❥ 感谢Minecraft社区，也感谢开发者们！
